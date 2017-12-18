@@ -56,13 +56,13 @@ In order to successfully execute the application, you should have:
  1. Clone this repository with
 
     ```
-    $ git clone https://github.com/SimonNtz/SAR_app.git
+    $ git clone https://github.com/SixSq/SAR-app.git
     ```
 
  2. Add the list of products into the input file
 
     ```
-    $ cd SAR_app/run/
+    $ cd SAR-app/run/
     $ # edit product_list.cfg
     ```
 
@@ -93,14 +93,14 @@ In order to successfully execute the application, you should have:
 
 ## Modularity
 
-The *SAR_app's* scripts form the application's base however the map and reduce functions are located in an other *Github* repository, by default [SAR_proc](https://github.com/SimonNtz/SAR_proc/).
+The *SAR_app's* scripts form the application's base however the map and reduce functions are located in an other *Github* repository, by default [SAR-proc](https://github.com/SixSq/SAR-proc/).
 During the deployment it get cloned locally using an application's parameter containing its respective URL.  
 The intent behind isolating the SAR processor is to make it customizable to the users with less effort.
 
-While running the client script, a *Github* repository url respecting the [SAR_proc](https://github.com/SimonNtz/SAR_proc/) requirements can be pass as an input parameter.
+While running the client script, a *Github* repository url respecting the [SAR-proc](https://github.com/SixSq/SAR-proc/) requirements can be pass as an input parameter.
 
 ```
-$ ./SAR_run.sh <cloud> <https://github.com/YOUR_USERNAME/SAR_proc>
+$ ./SAR_run.sh <cloud> <https://github.com/YOUR_USERNAME/SAR-proc>
 ```
 
 

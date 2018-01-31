@@ -5,6 +5,8 @@ set -o pipefail
 
 source ../lib.sh
 
+MAPPER_DIR=~/SAR-proc
+
 echo "@MAPPER_RUN: "$(timestamp)" - \
             VM started on cloudservice: `ss-get cloudservice` \
             with service-offer: `ss-get service-offer`." 
@@ -35,7 +37,7 @@ get_data() {
 
 run_proc() {
     echo "java_max_mem: `ss-get snap_max_mem`" >> /root/.snap/snap-python/snappy/snappy.ini
-    SAR_proc=~/SAR-proc/SAR_mapper.py
+    SAR_proc=$MAPPER_DIR/SAR_mapper.py
 
     for i in ${my_product[@]}; do
         python $SAR_proc $i
@@ -50,11 +52,16 @@ push_product() {
     nc $reducer_ip 808$id < $id.png
 }
 
+cd ~/SAR-app/deployment/mapper
+
 #config_s3 $S3_HOST $S3_ACCESS_KEY $S3_SECRET_KEY
+# FIXME: data should be obtained from wrapped processors by 'data-access-lib'
 get_data $S3_BUCKET $S3_HOST
 
 start_filebeat
 
+cd ~
+git clone `ss-get git-repo` $MAPPER_DIR
 cd ~/SAR-app/deployment/mapper
 run_proc
 push_product

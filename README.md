@@ -42,7 +42,7 @@ In order to successfully execute the application, you should have:
 
  2. Cloud credentials added in your Nuvla user profile
     <div style="padding:14px"><img
-    src="https://github.com/SimonNtz/SAR_app/blob/master/run/NuvlaProfile.png"
+    src="https://github.com/SixSq/SAR-app/blob/master/run/NuvlaProfile.png"
     width="75%"></div>
 
  3. Python `>=2.6 and <3` and python package manager `pip` installed. Usually
@@ -93,7 +93,7 @@ In order to successfully execute the application, you should have:
 
 ## Modularity
 
-The *SAR_app's* scripts form the application's base however the map and reduce functions are located in an other *Github* repository, by default [SAR-proc](https://github.com/SixSq/SAR-proc/).
+The *SAR-app's* scripts form the application's base however the map and reduce functions are located in an other *Github* repository, by default [SAR-proc](https://github.com/SixSq/SAR-proc/).
 During the deployment it get cloned locally using an application's parameter containing its respective URL.  
 The intent behind isolating the SAR processor is to make it customizable to the users with less effort.
 

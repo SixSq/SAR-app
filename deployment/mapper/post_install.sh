@@ -41,7 +41,7 @@ install_S1_toolbox() {
 #   sudo apt-get install -y filebeat
 # }
 
-# configure_python_interface() { # TODO Add Snap updating in "SAR_proc" repo.
+# configure_python_interface() { # TODO Add Snap updating in "SAR-proc" repo.
 # # Dump SNAP with fake display port
 #      export DISPLAY=:1
 #      Xvfb :1 -screen 0 1024x768x16 &

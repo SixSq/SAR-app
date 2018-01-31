@@ -35,7 +35,7 @@ get_data() {
 
 run_proc() {
     echo "java_max_mem: `ss-get snap_max_mem`" >> /root/.snap/snap-python/snappy/snappy.ini
-    SAR_proc=~/SAR_proc/SAR_mapper.py
+    SAR_proc=~/SAR-proc/SAR_mapper.py
 
     for i in ${my_product[@]}; do
         python $SAR_proc $i
@@ -55,7 +55,7 @@ get_data $S3_BUCKET $S3_HOST
 
 start_filebeat
 
-cd ~/SAR_app/deployment/mapper
+cd ~/SAR-app/deployment/mapper
 run_proc
 push_product
 

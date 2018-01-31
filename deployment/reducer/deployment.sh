@@ -42,7 +42,8 @@ wait_mappers_ready() {
     set_listeners $ids
     check_mappers_ready
     # Wait before all mappers are in ready state.
-    while [ $(count_ready) -ne `ss-get mapper:multiplicity` ]; do
+    mapper_mult=`ss-get mapper:multiplicity`
+    while [ $(count_ready) -ne $mapper_mult ]; do
         sleep 100
     done
 }
@@ -50,7 +51,7 @@ start_filebeat
 wait_mappers_ready
 
 # Create the final output
-cd ~/SAR_proc
+cd ~/SAR-proc
 echo "@REDUCER_RUN :"$(timestamp): "Start conversion."
 ./SAR_reducer.sh
 echo "@REDUCER_RUN :"$(timestamp): "Finish conversion."

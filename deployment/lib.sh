@@ -93,8 +93,6 @@ EOF
 
 start_filebeat() {
 
-    #server_ip=`ss-get --timeout=300 ELK_server:hostname`
-    #server_hostname=`ss-get --timeout=300 ELK_server:machine-hn`
     server_hostname=`ss-get --timeout=300 server_hn`
     server_ip=`ss-get --timeout=300 server_ip`
 
@@ -111,24 +109,24 @@ start_filebeat() {
     #         $filebeat_conf > tmp && mv tmp $filebeat_conf
 
     cat>$filebeat_conf<<EOF
-    filebeat.prospectors:
-    - input_type: log
+filebeat.prospectors:
+- input_type: log
 
-      paths:
-        - /var/log/auth.log
-        - /var/log/syslog
-        - /var/log/slipstream/client/slipstream-node.log
-      #fields:
-            #tags: ["EOproc"]
-      #include_lines: ["^@MAPPER_RUN", "^@REDUCER_RUN", "^@SAR_PROC"]
-    output.logstash:
-      # The Logstash hosts
-      hosts: [":5443"]
-      bulk_max_size: 2048
-      template.name: "filebeat"
-      template.path: "filebeat.template.json"
-      template.overwrite: false
-    document-type: syslog
+  paths:
+    - /var/log/auth.log
+    - /var/log/syslog
+    - /var/log/slipstream/client/slipstream-node.log
+  fields:
+        tags: ["EOproc"]
+  include_lines: ["^@MAPPER_RUN", "^@REDUCER_RUN", "^@SAR_PROC"]
+output.logstash:
+  # The Logstash hosts
+  hosts: ["$server_ip:5443"]
+  bulk_max_size: 2048
+  template.name: "filebeat"
+  template.path: "filebeat.template.json"
+  template.overwrite: false
+document-type: syslog
 EOF
 
     chmod go-w $filebeat_conf

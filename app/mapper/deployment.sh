@@ -23,11 +23,14 @@ S3_BUCKET=`ss-get s3-bucket`
 reducer_ip=`ss-get reducer:hostname`
 
 get_data() {
-    echo "@MAPPER_RUN: "$(timestamp) " - Start downloading product."
     bucket=${1?"Provide bucket name."}
+
+    echo "@MAPPER_RUN: "$(timestamp) " - Start downloading product."
+
+    cd $SARAPP_LOC/app/mapper
     echo $(date)
     for i in ${my_product[@]}; do
-        python3  get_data.py "https://$S3_HOST/$S3_BUCKET/" "$i.SAFE"
+        python3 get_data.py "https://$S3_HOST/$S3_BUCKET/" "$i.SAFE"
         #sudo s3cmd get --recursive s3://$bucket/$i.SAFE
     done
     echo "@MAPPER_RUN: "$(timestamp) " - Finish downloading product."
@@ -36,15 +39,17 @@ get_data() {
 
 run_proc() {
     echo "java_max_mem: `ss-get snap_max_mem`" >> /root/.snap/snap-python/snappy/snappy.ini
-    SAR_proc=$MAPPER_LOC/SAR_mapper.py
 
+    cd $SARAPP_LOC/app/mapper
+
+    SAR_proc=$MAPPER_LOC/SAR_mapper.py
     for i in ${my_product[@]}; do
         python $SAR_proc $i
     done
 
     # FIXME SAR_proc should store into current directory.
     find . -maxdepth 1 -name *.png -exec cp {} $id.png \;
-    #TODO clear .snap/var/temp/cache files
+    # TODO clear .snap/var/temp/cache files
 }
 
 push_product() {

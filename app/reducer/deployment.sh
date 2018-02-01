@@ -54,6 +54,7 @@ git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
 cd $SARAPP_LOC/app/reducer
 source ../lib.sh
 start_filebeat
+cd $SARAPP_LOC/app/reducer
 wait_mappers_ready
 
 # Clone reducer.

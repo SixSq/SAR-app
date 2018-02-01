@@ -58,10 +58,10 @@ cd $SARAPP_LOC/app/reducer
 wait_mappers_ready
 
 # Clone reducer.
-git clone `ss-get proc-git-repo` $REDUCER_DIR
+git clone `ss-get proc-git-repo` $REDUCER_LOC
 
 # Generate the final output
-cd $REDUCER_DIR
+cd $REDUCER_LOC
 echo "@REDUCER_RUN :"$(timestamp): "Start conversion."
 ./SAR_reducer.sh
 echo "@REDUCER_RUN :"$(timestamp): "Finish conversion."

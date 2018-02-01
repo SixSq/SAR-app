@@ -4,7 +4,8 @@ set -e
 set -x
 set -o pipefail
 
-REDUCER_DIR=~/SAR-proc
+REDUCER_LOC=~/SAR-proc
+SARAPP_LOC=~/SAR-app
 
 echo "@REDUCER_RUN: "$(timestamp)" - \
           VM started on cloudservice: `ss-get cloudservice` \
@@ -49,8 +50,8 @@ wait_mappers_ready() {
 }
 
 # Clone itself.
-git clone https://github.com/SixSq/SAR-app.git
-cd ~/SAR-app/app/reducer
+git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
+cd $SARAPP_LOC/app/reducer
 source ../lib.sh
 start_filebeat
 wait_mappers_ready

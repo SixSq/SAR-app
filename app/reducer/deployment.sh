@@ -63,5 +63,6 @@ git clone `ss-get proc-git-repo` $REDUCER_LOC
 # Generate the final output
 cd $REDUCER_LOC
 echo "@REDUCER_RUN :"$(timestamp): "Start conversion."
+export PROCESSED_DATA_LOC=$SARAPP_LOC/app/reducer
 ./SAR_reducer.sh
 echo "@REDUCER_RUN :"$(timestamp): "Finish conversion."

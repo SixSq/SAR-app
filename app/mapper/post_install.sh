@@ -4,13 +4,10 @@ set -e
 set -o pipefail
 
 #
-# Functional on Ubuntu distribution Version 16.04 LTS
+# For Ubuntu v16.04
 #
 
-
-
 install_S1_toolbox() {
-
   JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
   export JAVA_HOME
   PATH=$PATH:$JAVA_HOME/bin
@@ -29,18 +26,6 @@ install_S1_toolbox() {
   ln -s ../amd64/libjhdf5.so
 }
 
-
-# install_filebeat() { # Moved to pre-install Slipstream recipe b.c. of tty requirement.
-#
-#   apt-get update
-#   sudo apt-get install -y apt-transport-https
-#   wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-#   echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
-#   apt-get update
-#   export DEBIAN_FRONTEND="noninteractive"
-#   sudo apt-get install -y filebeat
-# }
-
 # configure_python_interface() { # TODO Add Snap updating in "SAR-proc" repo.
 # # Dump SNAP with fake display port
 #      export DISPLAY=:1
@@ -58,4 +43,3 @@ install_S1_toolbox() {
 
 install_S1_toolbox
 
-echo $?

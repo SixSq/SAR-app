@@ -4,6 +4,8 @@ set -e
 set -x
 set -o pipefail
 
+REDUCER_DIR=~/SAR-proc
+
 source ../lib.sh
 
 echo "@REDUCER_RUN: "$(timestamp)" - \
@@ -50,8 +52,10 @@ wait_mappers_ready() {
 start_filebeat
 wait_mappers_ready
 
-# Create the final output
-cd ~/SAR-proc
+git clone `ss-get proc-git-repo` $REDUCER_DIR
+
+# Generate the final output
+cd $REDUCER_DIR
 echo "@REDUCER_RUN :"$(timestamp): "Start conversion."
 ./SAR_reducer.sh
 echo "@REDUCER_RUN :"$(timestamp): "Finish conversion."

@@ -6,8 +6,6 @@ set -o pipefail
 
 REDUCER_DIR=~/SAR-proc
 
-source ../lib.sh
-
 echo "@REDUCER_RUN: "$(timestamp)" - \
           VM started on cloudservice: `ss-get cloudservice` \
           with service-offer: `ss-get service-offer`."
@@ -49,9 +47,15 @@ wait_mappers_ready() {
         sleep 100
     done
 }
+
+# Clone itself.
+git clone https://github.com/SixSq/SAR-app.git
+cd ~/SAR-app/app/reducer
+source ../lib.sh
 start_filebeat
 wait_mappers_ready
 
+# Clone reducer.
 git clone `ss-get proc-git-repo` $REDUCER_DIR
 
 # Generate the final output

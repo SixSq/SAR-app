@@ -3,8 +3,6 @@ set -e
 set -x
 set -o pipefail
 
-source ../lib.sh
-
 MAPPER_DIR=~/SAR-proc
 
 echo "@MAPPER_RUN: "$(timestamp)" - \
@@ -52,18 +50,19 @@ push_product() {
     nc $reducer_ip 808$id < $id.png
 }
 
+# Clone itself.
 git clone https://github.com/SixSq/SAR-app.git
 cd ~/SAR-app/app/mapper
+source ../lib.sh
+start_filebeat
+
+# Clone processor with a mapper.
+git clone `ss-get proc-git-repo` $MAPPER_DIR
 
 # FIXME: data should be obtained from wrapped processors by 'data-access-lib'
 #config_s3 $S3_HOST $S3_ACCESS_KEY $S3_SECRET_KEY
 get_data $S3_BUCKET $S3_HOST
 
-start_filebeat
-
-cd ~
-git clone `ss-get proc-git-repo` $MAPPER_DIR
-cd ~/SAR-app/app/mapper
 run_proc
 push_product
 

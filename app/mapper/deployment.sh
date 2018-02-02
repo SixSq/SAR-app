@@ -6,16 +6,16 @@ set -o pipefail
 MAPPER_LOC=~/SAR-proc
 SARAPP_LOC=~/SAR-app
 
-echo "@MAPPER_RUN: "$(timestamp)" - \
-            VM started on cloudservice: `ss-get cloudservice` \
-            with service-offer: `ss-get service-offer`." 
+cloud=`ss-get cloudservice`
+service_offer=`ss-get service-offer`
+echo "@MAPPER_RUN: $(timestamp) VM started (cloud, service offer): $cloud $service_offer"
 
 id=`ss-get id`
 SAR_data=(`ss-get product-list`)
 [ -n "$SAR_data" ] || ss-abort -- "product-list should not be empty."
 my_product=${SAR_data[$id-1]}
 IFS=' ' read -r -a my_product <<< "$my_product"
-echo "@MAPPER_RUN: "$(timestamp)" - $my_product for processing: ${my_product[@]}"
+echo "@MAPPER_RUN: $(timestamp) $my_product for processing: ${my_product[@]}"
 
 S3_HOST=`ss-get s3-host`
 S3_BUCKET=`ss-get s3-bucket`
@@ -23,19 +23,17 @@ S3_BUCKET=`ss-get s3-bucket`
 reducer_ip=`ss-get reducer:hostname`
 
 get_data() {
-    bucket=${1?"Provide bucket name."}
-
-    echo "@MAPPER_RUN: "$(timestamp) " - Start downloading product."
+    echo "@MAPPER_RUN: $(timestamp) start downloading product."
 
     cd $SARAPP_LOC/app/mapper
     echo $(date)
     for i in ${my_product[@]}; do
         python3 get_data.py "https://$S3_HOST/$S3_BUCKET/" "$i.SAFE"
-        #sudo s3cmd get --recursive s3://$bucket/$i.SAFE
+        # When config_s3 was used.
+        #s3cmd get --recursive s3://$S3_BUCKET/$i.SAFE
     done
-    echo "@MAPPER_RUN: "$(timestamp) " - Finish downloading product."
+    echo "@MAPPER_RUN: $(timestamp) finish downloading product."
 }
-
 
 run_proc() {
     echo "java_max_mem: `ss-get snap_max_mem`" >> /root/.snap/snap-python/snappy/snappy.ini
@@ -67,7 +65,7 @@ git clone `ss-get proc-git-repo` $MAPPER_LOC
 
 # FIXME: data should be obtained from wrapped processors by 'data-access-lib'
 #config_s3 $S3_HOST $S3_ACCESS_KEY $S3_SECRET_KEY
-get_data $S3_BUCKET $S3_HOST
+get_data
 
 run_proc
 push_product

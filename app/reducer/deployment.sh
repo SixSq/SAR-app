@@ -7,9 +7,9 @@ set -o pipefail
 REDUCER_LOC=~/SAR-proc
 SARAPP_LOC=~/SAR-app
 
-echo "@REDUCER_RUN: "$(timestamp)" - \
-          VM started on cloudservice: `ss-get cloudservice` \
-          with service-offer: `ss-get service-offer`."
+cloud=`ss-get cloudservice`
+service_offer=`ss-get service-offer`
+echo "@REDUCER_RUN $(timestamp) VM started (cloud, service offer): $cloud $service_offer"
 
 mapper_ids=`ss-get --noblock mapper:ids | sed -e 's/,/ /g'`
 mapper_mult=`ss-get mapper:multiplicity`

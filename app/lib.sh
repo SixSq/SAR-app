@@ -52,7 +52,7 @@ get_DUIID() {
 }
 
 timestamp() {
-  date +"%T"
+  date +"%s"
 }
 
 get_ss_user() {

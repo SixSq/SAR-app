@@ -8,14 +8,14 @@ SARAPP_LOC=~/SAR-app
 
 cloud=`ss-get cloudservice`
 service_offer=`ss-get service-offer`
-echo "@MAPPER_RUN: $(timestamp) VM started (cloud, service offer): $cloud $service_offer"
+echo "@MAPPER_RUN $(timestamp) VM started (cloud, service offer): $cloud $service_offer"
 
 id=`ss-get id`
 SAR_data=(`ss-get product-list`)
 [ -n "$SAR_data" ] || ss-abort -- "product-list should not be empty."
 my_product=${SAR_data[$id-1]}
 IFS=' ' read -r -a my_product <<< "$my_product"
-echo "@MAPPER_RUN: $(timestamp) $my_product for processing: ${my_product[@]}"
+echo "@MAPPER_RUN $(timestamp) $my_product for processing: ${my_product[@]}"
 
 S3_HOST=`ss-get s3-host`
 S3_BUCKET=`ss-get s3-bucket`
@@ -23,7 +23,7 @@ S3_BUCKET=`ss-get s3-bucket`
 reducer_ip=`ss-get reducer:hostname`
 
 get_data() {
-    echo "@MAPPER_RUN: $(timestamp) start downloading product."
+    echo "@MAPPER_RUN $(timestamp) start downloading product."
 
     cd $SARAPP_LOC/app/mapper
     echo $(date)
@@ -32,7 +32,7 @@ get_data() {
         # When config_s3 was used.
         #s3cmd get --recursive s3://$S3_BUCKET/$i.SAFE
     done
-    echo "@MAPPER_RUN: $(timestamp) finish downloading product."
+    echo "@MAPPER_RUN $(timestamp) finish downloading product."
 }
 
 run_proc() {

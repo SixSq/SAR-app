@@ -5,18 +5,10 @@ config_s3() {
 [default]
 host_base = $1
 host_bucket = %(bucket)s.$1
-
 access_key = $2
 secret_key = $3
-
 use_https = True
 EOF
-  if [ "$1" == "sos.exo.io" ] ;then
-        cat >>~/.s3cfg<<EOF
-# For Exoscale only
-signature_v2 = True
-EOF
-  fi
 }
 
 #

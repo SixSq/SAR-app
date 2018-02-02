@@ -65,23 +65,3 @@ mkdir -p $OUTPUT_DATA_LOC
 ./SAR_reducer.sh $INPUT_DATA_LOC $OUTPUT_DATA_LOC
 echo "@REDUCER_RUN $(timestamp) finish conversion."
 
-# Upload result to user defined object store.
-S3_HOST=`ss-get --noblock s3-host`
-S3_BUCKET=`ss-get --noblock s3-bucket`
-S3_ACCESS_KEY=`ss-get --noblock s3-access-key`
-S3_SECRET_KEY=`ss-get --noblock s3-secret-key`
-if [ -n "$S3_HOST" -a -n "$S3_BUCKET" -a -n "$S3_ACCESS_KEY" -a -n "$S3_SECRET_KEY" ]; then
-    cat > ~/.s3cfg <<EOF
-[default]
-host_base = $S3_HOST
-host_bucket = %(bucket)s.$S3_HOST
-access_key = $S3_ACCESS_KEY
-secret_key = $S3_SECRET_KEY
-use_https = True
-EOF
-    echo "@REDUCER_RUN $(timestamp) start uploading result(s) to S3."
-    s3cmd put $OUTPUT_DATA_LOC/* s3://$S3_BUCKET
-    echo "@REDUCER_RUN $(timestamp) finish uploading result(s) to S3."
-else
-    echo "WARNING: Not uploading result to S3. Not all S3 options were provided."
-fi

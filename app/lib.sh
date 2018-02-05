@@ -40,7 +40,8 @@ EOF
 
 get_DUIID() {
     awk -F= '/diid/ {print $2}' \
-        /opt/slipstream/client/sbin/slipstream.context
+        /opt/slipstream/client/sbin/slipstream.context | \
+        sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
 timestamp() {

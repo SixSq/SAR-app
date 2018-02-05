@@ -3,7 +3,7 @@
 #####  works only with python >= 3.2 #####
 
 import requests
-from xml.etree import ElementTree
+from xml.etree import ElementTree as ET
 import sys
 import os
 import re
@@ -15,15 +15,12 @@ prd_name = sys.argv[2]  # Product name extend by ".SAFE" we want to recover
 
 
 def download_file(url, f_name):
-    # local_filename = string.split(url, '/')[-1]
     local_filename = f_name
-    # NOTE the stream=True parameter
     r = requests.get(url, stream=True)
     with open(local_filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024):
             if chunk:  # filter out keep-alive new chunks
                 f.write(chunk)
-                # f.flush() commented by recommendation from J.F.Sebastian
     return local_filename
 
 
@@ -34,14 +31,17 @@ def create_subdir(path):
 
 
 def get_prd_name(f):
-    return (str.split(f, '/')[0])
+    return str.split(f, '/')[0]
 
 
-response = requests.get(host_base)
-tree = ElementTree.fromstring(response.content)
-
-for child in tree:
-    if len(child) > 0 and get_prd_name(child[0].text) == prd_name:
-        create_subdir(child[0].text)
-        download_file(host_base + child[0].text, child[0].text)
-        print("File URL:", host_base + '/' + child[0].text)
+response = requests.get(host_base + '?prefix=%s' % prd_name)
+if not response.ok:
+    raise Exception('Failed to get product %s with %s' %
+                    (prd_name, response.reason))
+root = ET.fromstring(response.text)
+tag_ns = 'http://s3.amazonaws.com/doc/2006-03-01/'
+for k in root.findall('.//{%s}Key' % tag_ns):
+    if get_prd_name(k.text) == prd_name:
+        create_subdir(k.text)
+        download_file(host_base + k.text, k.text)
+        print("Downloaded: ", host_base + '/' + k.text)

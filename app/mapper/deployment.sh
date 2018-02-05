@@ -6,9 +6,14 @@ set -o pipefail
 MAPPER_LOC=~/SAR-proc
 SARAPP_LOC=~/SAR-app
 
+# Clone itself.
+git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
+cd $SARAPP_LOC/app/mapper
+source ../lib.sh
+
 cloud=`ss-get cloudservice`
 service_offer=`ss-get service-offer`
-echo "@MAPPER_RUN $(timestamp) VM started (cloud, service offer): $cloud $service_offer"
+echo "@MAPPER_RUN $(timestamp) deployment script started (cloud, service offer): $cloud $service_offer"
 
 id=`ss-get id`
 SAR_data=(`ss-get product-list`)
@@ -54,10 +59,6 @@ push_product() {
     nc $reducer_ip 808$id < $id.png
 }
 
-# Clone itself.
-git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
-cd $SARAPP_LOC/app/mapper
-source ../lib.sh
 start_filebeat
 
 # Clone processor with a mapper.
@@ -71,3 +72,5 @@ run_proc
 push_product
 
 ss-set ready true
+
+echo "@MAPPER_RUN $(timestamp) deployment script finished (cloud, service offer): $cloud $service_offer"

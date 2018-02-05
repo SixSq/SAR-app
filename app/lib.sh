@@ -87,6 +87,8 @@ start_filebeat() {
 
     server_hostname=`ss-get --timeout=300 server_hn`
     server_ip=`ss-get --timeout=300 server_ip`
+    duid=$(get_DUIID)
+    cloud=$(ss-get cloudservice)
 
     echo  "$server_ip   $server_hostname">>/etc/hosts
 
@@ -110,6 +112,8 @@ filebeat.prospectors:
     - /var/log/slipstream/client/slipstream-node.log
   fields:
         tags: ["EOproc"]
+        cloud: "$cloud"
+        duid: "$duid"
   include_lines: ["^@MAPPER_RUN", "^@REDUCER_RUN", "^@SAR_PROC"]
 output.logstash:
   # The Logstash hosts

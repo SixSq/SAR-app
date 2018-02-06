@@ -9,7 +9,7 @@ SARAPP_LOC=~/SAR-app
 
 # Clone itself.
 git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
-cd $SARAPP_LOC/app/lib.sh
+source $SARAPP_LOC/app/lib.sh
 
 cloud=`ss-get cloudservice`
 service_offer=`ss-get service-offer`

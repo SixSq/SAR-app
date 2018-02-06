@@ -90,6 +90,8 @@ start_filebeat() {
     server_ip=`ss-get --timeout=300 server_ip`
     duid=$(get_DUIID)
     cloud=$(ss-get cloudservice)
+    nodename=$(ss-get nodename)
+    service_offer=$(ss-get service-offer)
 
     echo  "$server_ip   $server_hostname">>/etc/hosts
 
@@ -115,6 +117,8 @@ filebeat.prospectors:
         tags: ["EOproc"]
         cloud: "$cloud"
         duid: "$duid"
+        nodename: "$nodename"
+        service-offer: "$service_offer"
   include_lines: ["^@MAPPER_RUN", "^@REDUCER_RUN", "^@SAR_PROC"]
 output.logstash:
   # The Logstash hosts

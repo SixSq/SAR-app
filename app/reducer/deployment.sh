@@ -7,9 +7,13 @@ set -o pipefail
 REDUCER_LOC=~/SAR-proc
 SARAPP_LOC=~/SAR-app
 
+# Clone itself.
+git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
+cd $SARAPP_LOC/app/lib.sh
+
 cloud=`ss-get cloudservice`
 service_offer=`ss-get service-offer`
-echo "@REDUCER_RUN $(timestamp) VM started (cloud, service offer): $cloud $service_offer"
+echo "@REDUCER_RUN $(timestamp) start deployment (cloud, service offer): $cloud $service_offer"
 
 mapper_ids=`ss-get --noblock mapper:ids | sed -e 's/,/ /g'`
 mapper_mult=`ss-get mapper:multiplicity`
@@ -47,11 +51,8 @@ wait_mappers_ready() {
 # Clone reducer.
 git clone `ss-get proc-git-repo` $REDUCER_LOC
 
-# Clone itself.
-git clone https://github.com/SixSq/SAR-app.git $SARAPP_LOC
-cd $SARAPP_LOC/app/reducer
-source ../lib.sh
 start_filebeat
+
 cd $SARAPP_LOC/app/reducer
 set_listeners
 wait_mappers_ready
@@ -64,4 +65,6 @@ export OUTPUT_DATA_LOC=$SARAPP_LOC/app/reducer/output
 mkdir -p $OUTPUT_DATA_LOC
 ./SAR_reducer.sh $INPUT_DATA_LOC $OUTPUT_DATA_LOC
 echo "@REDUCER_RUN $(timestamp) finish conversion."
+
+echo "@REDUCER_RUN $(timestamp) finish deployment (cloud, service offer): $cloud $service_offer"
 

@@ -13,7 +13,7 @@ source ../lib.sh
 
 cloud=`ss-get cloudservice`
 service_offer=`ss-get service-offer`
-echo "@MAPPER_RUN $(timestamp) deployment script started (cloud, service offer): $cloud $service_offer"
+echo "@MAPPER_RUN $(timestamp) start deployment (cloud, service offer): $cloud $service_offer"
 
 id=`ss-get id`
 SAR_data=(`ss-get product-list`)
@@ -73,4 +73,4 @@ push_product
 
 ss-set ready true
 
-echo "@MAPPER_RUN $(timestamp) deployment script finished (cloud, service offer): $cloud $service_offer"
+echo "@MAPPER_RUN $(timestamp) finish deployment (cloud, service offer): $cloud $service_offer"

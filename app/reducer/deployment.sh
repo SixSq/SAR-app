@@ -66,5 +66,4 @@ mkdir -p $OUTPUT_DATA_LOC
 ./SAR_reducer.sh $INPUT_DATA_LOC $OUTPUT_DATA_LOC
 echo "@REDUCER_RUN $(timestamp) finish conversion."
 
-echo "@REDUCER_RUN $(timestamp) finish deployment (cloud, service offer): $cloud $service_offer"
 

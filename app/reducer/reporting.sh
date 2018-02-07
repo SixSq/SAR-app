@@ -21,3 +21,7 @@ else
     echo "@REDUCER_RUN WARNING: Not uploading result to S3. Not all S3 options were provided."
 fi
 echo "@REDUCER_RUN $(timestamp) finish uploading result(s) to S3."
+
+cloud=`ss-get cloudservice`
+service_offer=`ss-get service-offer`
+echo "@REDUCER_RUN $(timestamp) finish deployment (cloud, service offer): $cloud $service_offer"

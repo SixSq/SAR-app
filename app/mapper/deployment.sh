@@ -34,10 +34,8 @@ get_data() {
     echo $(date)
     for i in ${my_product[@]}; do
         python3 get_data.py "https://$S3_HOST/$S3_BUCKET/" "$i.SAFE"
-        # When config_s3 was used.
-        #s3cmd get --recursive s3://$S3_BUCKET/$i.SAFE
     done
-    echo "@MAPPER_RUN $(timestamp) finish downloading product."
+    echo "@MAPPER_RUN $(timestamp) finish downloading products -- ${my_product[@]}"
 }
 
 run_proc() {

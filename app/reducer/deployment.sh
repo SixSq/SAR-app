@@ -59,11 +59,11 @@ wait_mappers_ready
 
 # Generate the final output
 cd $REDUCER_LOC
-echo "@REDUCER_RUN $(timestamp) start conversion."
+echo "@REDUCER_RUN $(timestamp) start processing."
 export INPUT_DATA_LOC=$SARAPP_LOC/app/reducer
 export OUTPUT_DATA_LOC=$SARAPP_LOC/app/reducer/output
 mkdir -p $OUTPUT_DATA_LOC
 ./SAR_reducer.sh $INPUT_DATA_LOC $OUTPUT_DATA_LOC
-echo "@REDUCER_RUN $(timestamp) finish conversion."
+echo "@REDUCER_RUN $(timestamp) finish processing."
 
 
